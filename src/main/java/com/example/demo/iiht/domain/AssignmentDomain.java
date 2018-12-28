@@ -2,6 +2,7 @@ package com.example.demo.iiht.domain;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,10 +17,16 @@ import com.example.demo.iiht.dto.Subject;
 public class AssignmentDomain {
 	
 	@Autowired
-	AssignmentDAO assignmentDAO;
+	private AssignmentDAO assignmentDAO;
+	
 	public String addBook(Book book){
-		//book.setPublishDate(formateDate(book.getPublishDate(),"mm-dd-yyyy"));
 		assignmentDAO.addBook(book);
+		String status = "Success";
+		return status;
+	}
+	
+	public String updateBook(Book book){
+		assignmentDAO.updateBook(book);
 		String status = "Success";
 		return status;
 	}
@@ -44,13 +51,25 @@ public class AssignmentDomain {
 		return status;
 	}
 	
+	public String deleteBookById(long bookId){
+		String status = null;
+		int result = assignmentDAO.deleteBookById(bookId);
+		if(result==1){
+			status = "Success";
+		}else{
+			status = "Failure";
+		}
+		return status;
+	}
+	
 	public String deleteSubject(String title){
 		assignmentDAO.deleteSubject(title);
 		String status = "Success";
 		return status;
 	}
 	
-	public Book searchBook(String title) throws ParseException{
+	public List<Book> searchBook(String title) throws ParseException{
+		List<Book> books = new ArrayList<Book>();
 		Book book = new Book();
 		List<Object[]> objList = assignmentDAO.searchBook(title);
 		for(Object[] obj: objList){
@@ -59,8 +78,24 @@ public class AssignmentDomain {
 		book.setPrice(Double.parseDouble(obj[2].toString().trim()));
 		book.setVolume(Integer.parseInt(obj[3].toString().trim()));
 		book.setPublishDate(convertStringToDate(obj[4].toString().trim()));
+		books.add(book);
 		}
-		return book;
+		return books;
+	}
+	
+	public List<Book> searchBookById(long bookId) throws ParseException{
+		List<Book> books = new ArrayList<Book>();
+		Book book = new Book();
+		List<Object[]> objList = assignmentDAO.searchBookById(bookId);
+		for(Object[] obj: objList){
+		book.setBookId(Integer.parseInt(obj[0].toString().trim()));
+		book.setTitle(obj[1].toString().trim());
+		book.setPrice(Double.parseDouble(obj[2].toString().trim()));
+		book.setVolume(Integer.parseInt(obj[3].toString().trim()));
+		book.setPublishDate(convertStringToDate(obj[4].toString().trim()));
+		books.add(book);
+		}
+		return books;
 	}
 	
 	public Subject searchSubject(String title){

@@ -25,6 +25,11 @@ public class AssignmentDAO {
 
    
 	public void addBook(Book book){
+		entityManager.persist(book);
+		
+	}
+	
+	public void updateBook(Book book){
 		entityManager.merge(book);
 		
 	}
@@ -37,6 +42,12 @@ public class AssignmentDAO {
 	public List<Object[]> searchBook(String title){
 		Query query = entityManager.createQuery("Select b.bookId,b.title,b.price,b.volume,b.publishDate from Book b where b.title=?1");	
 		query.setParameter(1, title);
+		return query.getResultList();
+	}
+	
+	public List<Object[]> searchBookById(long bookId){
+		Query query = entityManager.createQuery("Select b.bookId,b.title,b.price,b.volume,b.publishDate from Book b where b.bookId=?1");	
+		query.setParameter(1, bookId);
 		return query.getResultList();
 	}
 	
@@ -59,6 +70,12 @@ public class AssignmentDAO {
 		Query query = entityManager.createQuery("delete from Book b where b.title=?1");	
 		query.setParameter(1, title);
 		query.executeUpdate();
+	}
+	
+	public int deleteBookById(long bookId){
+		Query query = entityManager.createQuery("delete from Book b where b.bookId=?1");	
+		query.setParameter(1, bookId);
+		return query.executeUpdate();
 	}
 	
 	public void deleteSubject(String title){

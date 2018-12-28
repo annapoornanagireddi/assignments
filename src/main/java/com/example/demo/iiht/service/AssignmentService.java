@@ -1,6 +1,7 @@
 package com.example.demo.iiht.service;
 
 import java.text.ParseException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,15 @@ import com.example.demo.iiht.dto.Subject;
 public class AssignmentService {
 	
 	@Autowired
-	AssignmentDomain assignmentDomain;
+	private AssignmentDomain assignmentDomain;
 	
 	public String addBook(Book book){
 		String status = assignmentDomain.addBook(book);
+		return status;
+	}
+	
+	public String updateBook(Book book){
+		String status = assignmentDomain.updateBook(book);
 		return status;
 	}
 	
@@ -32,15 +38,25 @@ public class AssignmentService {
 		return status;
 	}
 	
+	public String deleteBookById(long bookId){
+		String status = assignmentDomain.deleteBookById(bookId);
+		return status;
+	}
+	
 	public String deleteSubject(String title){
 		String status = assignmentDomain.deleteSubject(title);
 		return status;
 	}
 	
 	
-	public Book searchBook(String title) throws ParseException{
-		Book book = assignmentDomain.searchBook(title);
-		return book;
+	public List<Book> searchBook(String title) throws ParseException{
+		List<Book> books = assignmentDomain.searchBook(title);
+		return books;
+	}
+	
+	public List<Book> searchBookById(long bookId) throws ParseException{
+		List<Book> books = assignmentDomain.searchBookById(bookId);
+		return books;
 	}
 	
 	public Subject searchSubject(String title){

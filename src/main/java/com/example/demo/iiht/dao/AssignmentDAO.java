@@ -25,7 +25,7 @@ public class AssignmentDAO {
 
    
 	public void addBook(Book book){
-		entityManager.persist(book);
+		entityManager.merge(book);
 		
 	}
 	
